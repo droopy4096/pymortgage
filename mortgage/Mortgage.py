@@ -24,11 +24,11 @@ class Mortgage(object):
     _start_date = None
     _payment_periods = None
 
-    def __init__(self, house_price, term, interest, downplayment, start_date,
+    def __init__(self, house_price, term, interest, downpayment, start_date,
                  payment_periods=12):
         self._term = term
         self._house_price = house_price
-        self._downpayment = downplayment
+        self._downpayment = downpayment
         self._interest = interest
         self._start_date = start_date
         self._payment_periods = payment_periods
