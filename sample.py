@@ -11,4 +11,4 @@ for p in m.payments():
     interest += p.interest
     print p
 
-print principal, interest
+print "Total paid {0:.2f} principal and {1:.2f} interest".format(principal, interest)
