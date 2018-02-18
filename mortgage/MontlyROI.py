@@ -3,20 +3,20 @@
 
 class MonthlyROI(object):
 
-    _year
-    _month
-    _mortgage_payment
-    _principal_paid
-    _interest_paid
-    _appreciated_price
-    _tax
-    _insurance
-    _writeoff
-    _net_worth_gain
-    _appreciated_net_worth_gain
-    _rent_equivalent
-    _apppreciated_rent_equivalent
-    _mortgage
+    _year = None
+    _month = None
+    _mortgage_payment = None
+    _principal_paid = None
+    _interest_paid = None
+    _appreciated_price = None
+    _tax = None
+    _insurance = None
+    _writeoff = None
+    _net_worth_gain = None
+    _appreciated_net_worth_gain = None
+    _rent_equivalent = None
+    _apppreciated_rent_equivalent = None
+    _mortgage = None
 
     def __init__(self, year, month,
                  mortgage_payment, principal_paid,

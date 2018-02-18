@@ -4,6 +4,8 @@ import decimal
 from PeriodMortgage import PeriodMortgage
 
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
+
+
 def dollar(f, round=decimal.ROUND_CEILING):
     """
     This function rounds the passed float to 2 decimal places.
@@ -55,9 +57,9 @@ class Mortgage(object):
         """ Periodic payment sum:
             how much is the payment per period"""
         # https://www.wikihow.com/Calculate-Mortgage-Payments
-        p_interest=self.interest/self._payment_periods
-        pre_amt = self.principal*(p_interest*(1+p_interest)**self.loan_periods)/((1+p_interest)**self.loan_periods-1)
-        ##ORIG pre_amt = float(self.principal) * self.interest / (float(self._payment_periods) * (1. - (1. / self.period_growth) ** self.loan_periods))
+        p_interest = self.interest / self._payment_periods
+        pre_amt = self.principal * (p_interest * (1 + p_interest) **
+                                    self.loan_periods) / ((1 + p_interest)**self.loan_periods - 1)
         return dollar(pre_amt, round=decimal.ROUND_CEILING)
 
     @property
@@ -79,8 +81,9 @@ class Mortgage(object):
         current_balance = dollar(self.principal)
         interest_decimal = decimal.Decimal(str(self.interest)).quantize(decimal.Decimal('.000001'))
         # while True:
-        for payment_period in xrange(1, self._term+1):
-            interest_unrounded = current_balance * interest_decimal * decimal.Decimal(1) / self._payment_periods
+        for payment_period in xrange(1, self._term + 1):
+            interest_unrounded = current_balance * interest_decimal * \
+                decimal.Decimal(1) / self._payment_periods
             paid_interest = dollar(interest_unrounded, round=decimal.ROUND_HALF_UP)
             full_payment = self.period_payment + self.period_prepayment(payment_period)
             paid_principal = full_payment - paid_interest
