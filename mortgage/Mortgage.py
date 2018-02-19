@@ -43,7 +43,7 @@ class Mortgage(object):
         self._annual_payment_periods=schedule.annual_periods
         self._schedule=list(schedule)
         self._term=len(self._schedule)
-        print("Annual payment periods: {0}\nSchedule: {1}\nTerm: {2}".format(self._annual_payment_periods, str(self._schedule), self._term))
+        # print("Annual payment periods: {0}\nSchedule: {1}\nTerm: {2}".format(self._annual_payment_periods, str(self._schedule), self._term))
 
     def period_prepayment(self, period):
         """
@@ -107,8 +107,9 @@ class Mortgage(object):
 
 if __name__=='__main__':
     from datetime import date
-    from TermScheduler import MonthlySchedule
-    m = Mortgage(300000, 0.035, 300000 * 0.2, MonthlySchedule(date(2009,10,1),date(2039,10,1),skip_last=True))
+    from TermScheduler import monthly_schedule
+    # m = Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009,10,1),30))
+    m = Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009,10,1),15))
 
     principal, interest = 0, 0
 

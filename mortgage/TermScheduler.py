@@ -103,6 +103,15 @@ class MonthlySchedule(TermSchedule):
             raise e
         return return_date
 
+
+def monthly_schedule(start_date,years,step=1):
+    from datetime import date
+    return MonthlySchedule(start_date,date(start_date.year+years,start_date.month,start_date.day),months=step,skip_last=True)
+
+def weekly_schedule(start_date,years,step=2):
+    from datetime import date
+    return WeeklySchedule(start_date,date(start_date.year+years,start_date.month,start_date.day),weeks=step,skip_last=True)
+
 if __name__ == '__main__':
     ws=WeeklySchedule(start_date=datetime.date(2002,1,1),end_date=datetime.date(2004,3,3),weeks=3)
     ms=MonthlySchedule(start_date=datetime.date(2002,1,1),end_date=datetime.date(2006,3,3),months=2)
