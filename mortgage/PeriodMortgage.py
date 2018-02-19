@@ -7,11 +7,12 @@ class PeriodMortgage(object):
     _principal_left = None
     _remaining_balance = None
 
-    def __init__(self, principal, interest, period, remaining_balance):
+    def __init__(self, principal, interest, period, payment_date, remaining_balance):
         self._principal = principal
         self._interest = interest
         self._period=period
         self._remaining_balance=remaining_balance
+        self._date=payment_date
 
     @property
     def remaining_balance(self):
@@ -51,4 +52,4 @@ class PeriodMortgage(object):
         return self.principal + self.interest
 
     def __str__(self):
-        return "{0:>3} principal:{1:.2f} interest:{2:.2f} remaining:{3:.2f}".format(self.period, self.principal, self.interest, self.remaining_balance)
+        return "{0:>3} {1:>10} principal:{2:.2f} interest:{3:.2f} remaining:{4:.2f}".format(self.period, str(self._date), self.principal, self.interest, self.remaining_balance)

@@ -24,8 +24,7 @@ class Mortgage(object):
     _start_date = None
     _annual_payment_periods = None
 
-    def __init__(self, house_price, term, interest, downpayment, schedule,
-                 annual_payment_periods=12):
+    def __init__(self, house_price, interest, downpayment, schedule):
         """
         @param decimal house_price
         @param int term
@@ -34,17 +33,17 @@ class Mortgage(object):
         @param TermSchedule schedule
         @param int payment_periods
         """
-        self._term = term
+        # self._term = term
         self._house_price = house_price
         self._downpayment = downpayment
         self._interest = interest
-        self._start_date = schedule
-        self._annual_payment_periods = annual_payment_periods
+        # self._start_date = schedule
+        # self._annual_payment_periods = annual_payment_periods
 
-        ### self._annual_payment_periods=schedule.annual_periods
-        ### self._schedule=list(schedule)
-        ### self._term=len(self._schedule)
-        # self._term=
+        self._annual_payment_periods=schedule.annual_periods
+        self._schedule=list(schedule)
+        self._term=len(self._schedule)
+        print("Annual payment periods: {0}\nSchedule: {1}\nTerm: {2}".format(self._annual_payment_periods, str(self._schedule), self._term))
 
     def period_prepayment(self, period):
         """
@@ -93,22 +92,23 @@ class Mortgage(object):
         """
         current_balance = dollar(self.principal)
         interest_decimal = decimal.Decimal(str(self.interest)).quantize(decimal.Decimal('.000001'))
-        for payment_period in xrange(1, self._term + 1):
+        for payment_period, payment_date in enumerate(self._schedule,1):
             interest_unrounded = current_balance * interest_decimal * \
                 decimal.Decimal(1) / self._annual_payment_periods
             paid_interest = dollar(interest_unrounded, round=decimal.ROUND_HALF_UP)
             full_payment = self.period_payment + self.period_prepayment(payment_period)
             paid_principal = full_payment - paid_interest
             if full_payment >= current_balance + paid_interest:
-                yield PeriodMortgage(current_balance, paid_interest, payment_period, 0)
+                yield PeriodMortgage(current_balance, paid_interest, payment_period, payment_date, 0)
                 # yield balance, interest
                 break
             current_balance -= paid_principal
-            yield PeriodMortgage(paid_principal, paid_interest, payment_period, current_balance)
+            yield PeriodMortgage(paid_principal, paid_interest, payment_period, payment_date, current_balance)
 
 if __name__=='__main__':
     from datetime import date
-    m = Mortgage(300000, 12 * 30, 0.035, 300000 * 0.2, date(2009,10,1), 12)
+    from TermScheduler import MonthlySchedule
+    m = Mortgage(300000, 0.035, 300000 * 0.2, MonthlySchedule(date(2009,10,1),date(2039,10,1),skip_last=True))
 
     principal, interest = 0, 0
 
