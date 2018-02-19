@@ -1,7 +1,7 @@
 # coding=UTF-8
 
 import decimal
-from PeriodMortgage import PeriodMortgage
+from MortgageStatement import MortgageStatement
 
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
 
@@ -99,11 +99,11 @@ class Mortgage(object):
             full_payment = self.period_payment + self.period_prepayment(payment_period)
             paid_principal = full_payment - paid_interest
             if full_payment >= current_balance + paid_interest:
-                yield PeriodMortgage(current_balance, paid_interest, payment_period, payment_date, 0)
+                yield MortgageStatement(current_balance, paid_interest, payment_period, payment_date, 0)
                 # yield balance, interest
                 break
             current_balance -= paid_principal
-            yield PeriodMortgage(paid_principal, paid_interest, payment_period, payment_date, current_balance)
+            yield MortgageStatement(paid_principal, paid_interest, payment_period, payment_date, current_balance)
 
 if __name__=='__main__':
     from datetime import date

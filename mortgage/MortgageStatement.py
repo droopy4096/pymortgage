@@ -1,11 +1,13 @@
 #!/bin/env python
 
 
-class PeriodMortgage(object):
+class MortgageStatement(object):
     _principal = None
     _interest = None
     _principal_left = None
     _remaining_balance = None
+    _date = None
+    _period = None
 
     def __init__(self, principal, interest, period, payment_date, remaining_balance):
         self._principal = principal
