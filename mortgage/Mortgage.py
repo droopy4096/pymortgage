@@ -48,7 +48,7 @@ class Mortgage(object):
 
     def period_prepayment(self, period):
         """
-         abstract function/hook for prepayment oranization
+         abstract function/hook for prepayment organization
 
         @param int period :
         @return float :
