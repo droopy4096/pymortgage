@@ -1,6 +1,7 @@
 # coding=UTF-8
 
 import decimal
+from UserDict import UserDict
 from MortgageStatement import MortgageStatement
 
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
@@ -75,6 +76,10 @@ class Mortgage(object):
         return dollar(pre_amt, round=decimal.ROUND_CEILING)
 
     @property
+    def schedule(self):
+        return self._schedule
+
+    @property
     def interest(self):
         return self._interest
 
@@ -105,12 +110,76 @@ class Mortgage(object):
             current_balance -= paid_principal
             yield MortgageStatement(paid_principal, paid_interest, payment_period, payment_date, current_balance)
 
+class RapidPayMortgage(Mortgage):
+    """Normal mortgage with additional principal payments each pay period"""
+    def __init__(self, house_price, interest, downpayment, schedule, prepayment_schedule):
+        super(RapidPayMortgage,self).__init__(house_price, interest, downpayment, schedule)
+        self._prepayment_schedule=prepayment_schedule
+
+    def period_prepayment(self, period):
+        return self._prepayment_schedule[period]
+
+class PrePrepaymentSchedule(UserDict):
+    def __init__(self, payment_schedule):
+        self._payment_schedule=list(payment_schedule)
+        self.data={}
+        # self._prepayment_schedule={}
+
+    def addPayment(self, payment_period, payment):
+        if payment_period not in self.data:
+            self.data[payment_period]=payment
+        else:
+            self.data[payment_period]+=payment
+
+    def addPaymentOnDate(self, payment_date, payment):
+        for payment_period, p in enumerate(self._payment_schedule,1):
+            if p>payment_date:
+                self.addPayment(payment_period,payment)
+                break
+        else:
+            if p<=payment_date:
+                self.add(payment_period,payment)
+
+    def __str__(self):
+        return str(self.data)
+
+    def __setitem__(self, period, payment):
+        """set payment for specified period"""
+        self.addPayment(period,payment)
+
+    def __getitem__(self, period):
+        if period in self.data:
+            return self.data[period]
+        else:
+            return 0
+
 if __name__=='__main__':
     from datetime import date
     from TermScheduler import monthly_schedule
     # m = Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009,10,1),30))
     m = Mortgage(300000, 0.035, 300000 * 0.2, monthly_schedule(date(2009,10,1),15))
 
+    principal, interest = 0, 0
+
+    for p in m.payments():
+        principal += p.principal
+        interest += p.interest
+        print(p)
+
+    print("Total paid {0:.2f} principal and {1:.2f} interest".format(principal, interest))
+
+    ms=monthly_schedule(date(2009,10,1),15)
+    pps=PrePrepaymentSchedule(ms)
+    print(str(pps))
+    pps[174]=1000
+    print(str(pps))
+    pps.addPaymentOnDate(date(2024,7,5),2000)
+    print(str(pps))
+    print(str(pps[175]))
+
+    #since we've got to restart iterator... need a new instance of the same:
+    ms=monthly_schedule(date(2009,10,1),15)
+    m=RapidPayMortgage(300000, 0.035, 300000 * 0.2, ms, pps)
     principal, interest = 0, 0
 
     for p in m.payments():
