@@ -171,6 +171,7 @@ if __name__=='__main__':
     ms=monthly_schedule(date(2009,10,1),15)
     pps=PrePrepaymentSchedule(ms)
     print(str(pps))
+    pps[14]=1000
     pps[174]=1000
     print(str(pps))
     pps.addPaymentOnDate(date(2024,7,5),2000)
