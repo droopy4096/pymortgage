@@ -16,3 +16,19 @@ class Expense(object):
     @property
     def cost(self):
         return self._cost
+
+class ExpenseList(object):
+    def __init__(self,**kwargs):
+        self._expenses=[]
+        self._options=kwargs
+    
+    def addExpense(self, expense):
+        self._expenses.append(expense)
+    
+    def sum(self):
+        return sum([e.cost for e in self._expenses])
+
+    @property(doc="Options common for this list")
+    def options(self):
+        """return expenseList options"""
+        return self._options
