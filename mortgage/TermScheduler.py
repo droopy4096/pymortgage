@@ -121,14 +121,10 @@ class WeeklySchedule(TermSchedule):
 
 class WeeklySchedule_iter(TermSchedule_iter):
     def __init__(self, start_date, end_date, skip_last=False, **kwargs):
-        super(WeeklySchedule_iter, self).__init__(start_date, end_date, skip_last)
+        super(WeeklySchedule_iter, self).__init__(start_date, end_date, skip_last, **kwargs)
         weeks = kwargs['weeks']
         self.delta = datetime.timedelta(weeks=weeks)
-        if 52 % weeks != 0:
-            raise WrongSchedule(
-                "Schedule does not fit into annual cycle: {0}wk annual {1}wk period".format(
-                    52, weeks))
-        self.annual_periods = 52 // weeks
+        # self.annual_periods = 52 // weeks
 
     def get_delta(self):
         return self.delta
