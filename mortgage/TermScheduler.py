@@ -17,6 +17,8 @@ class TermSchedule(object):
         self.next_year=self._plus_year(self.start_date)
         self._annual_periods=None
         self._skip_last=skip_last
+        # self._iter_class = TermSchedule_iter
+        # self._iter_args = kwargs
 
     def _plus_year(self, from_year, years=1):
         """Caveat: do not use for Feb 29 - won't work as expected"""
@@ -38,6 +40,11 @@ class TermSchedule(object):
 
     def __iter__(self):
         return self
+        ##TODO: below code hardcodes abstract TermSchedule_iter class
+        ##      causing breakage for subclasses. Need more flexible path here.
+        term_iterator=self._iter_class(self.start_date, self.end_date, self._skip_last)
+        term_iterator.annual_periods=self.annual_periods
+        return term_iterator
 
     def next(self):
         # next_date=self.start_date+self.get_delta()
@@ -66,6 +73,14 @@ class TermSchedule(object):
             else:
                 self.current_date=next_date
             return return_date
+
+class TermSchedule_iter(TermSchedule):
+    def __init__(self,start_date,end_date,skip_last=False):
+        super(TermSchedule_iter, self).__init__(start_date, end_date, skip_last)
+
+    def __iter__(self):
+        return self
+
 
 class WeeklySchedule(TermSchedule):
     def __init__(self,start_date,end_date,weeks=1,skip_last=False):
@@ -113,5 +128,5 @@ def weekly_schedule(start_date,years,step=2):
     return WeeklySchedule(start_date,date(start_date.year+years,start_date.month,start_date.day),weeks=step,skip_last=True)
 
 if __name__ == '__main__':
-    ws=WeeklySchedule(start_date=datetime.date(2002,1,1),end_date=datetime.date(2004,3,3),weeks=3)
+    ws=WeeklySchedule(start_date=datetime.date(2002,1,1),end_date=datetime.date(2004,3,3),weeks=2)
     ms=MonthlySchedule(start_date=datetime.date(2002,1,1),end_date=datetime.date(2006,3,3),months=2)
