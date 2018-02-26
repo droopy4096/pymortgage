@@ -2,6 +2,9 @@ import datetime
 # from future import print_statement
 
 
+JSON_DATE_FORMAT = '%Y-%m-%d'
+
+
 class WrongSchedule(Exception):
     def __init__(self, exception_txt):
         self.msg = exception_txt
@@ -106,6 +109,18 @@ class TermSchedule_iter(object):
             return return_date
 
 
+class CustomSchedule(TermSchedule):
+    def __init__(self, start_date, end_date, skip_last=False, **kwargs):
+        self._events = kwargs['events']
+        self.annual_periods = kwargs['annual_periods']
+        kwargs['annual_periods'] = self.annual_periods
+        super(CustomSchedule, self).__init__(start_date, end_date, skip_last, **kwargs)
+        self._iter_class = None
+
+    def __iter__(self):
+        return iter(self._events)
+
+
 class WeeklySchedule(TermSchedule):
     def __init__(self, start_date, end_date, skip_last=False, **kwargs):
         weeks = kwargs['weeks']
@@ -173,13 +188,45 @@ class MonthlySchedule_iter(TermSchedule_iter):
 def monthly_schedule(start_date, years, step=1):
     from datetime import date
     return MonthlySchedule(start_date, date(start_date.year + years,
-                                            start_date.month, start_date.day), months=step, skip_last=True)
+                                            start_date.month, start_date.day),
+                           months=step, skip_last=True)
 
 
 def weekly_schedule(start_date, years, step=2):
     from datetime import date
     return WeeklySchedule(start_date, date(start_date.year + years,
-                                           start_date.month, start_date.day), weeks=step, skip_last=True)
+                                           start_date.month, start_date.day),
+                          weeks=step, skip_last=True)
+
+
+def schedule2json(schedule):
+    json_friendly = {}
+    json_friendly['annual_periods'] = schedule.annual_periods
+    json_friendly['start_date'] = schedule.start_date
+    json_friendly['end_date'] = schedule.end_date
+    json_friendly['events'] = []
+    for event_date in schedule:
+        json_friendly['events'].append(event_date.strftime(JSON_DATE_FORMAT))
+    return json_friendly
+
+
+def json2schedule(json_schedule):
+    schedule_events = []
+    for event_str in schedule_events:
+        parsed = datetime.datetime.strptime(event_str, JSON_DATE_FORMAT)
+        schedule_events.append(parsed.date())
+
+    start_date = datetime.datetime.strptime(json_schedule['start_date'],
+                                            JSON_DATE_FORMAT)
+    end_date = datetime.datetime.strptime(json_schedule['end_date'],
+                                          JSON_DATE_FORMAT)
+    schedule = CustomSchedule(start_date,
+                              end_date,
+                              events=schedule_events,
+                              annual_periods=json_schedule['annual_periods'],
+
+                              )
+    return schedule
 
 
 if __name__ == '__main__':
