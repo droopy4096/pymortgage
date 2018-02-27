@@ -199,20 +199,32 @@ def weekly_schedule(start_date, years, step=2):
                           weeks=step, skip_last=True)
 
 
+def date2json(event_date):
+    """serialize date into string"""
+    return event_date.strftime(JSON_DATE_FORMAT)
+
+
+def json2date(date_string):
+    """de-serialize date"""
+    return datetime.datetime.strptime(date_string, JSON_DATE_FORMAT)
+
+
 def schedule2json(schedule):
+    """serialize schedule into JSON"""
     json_friendly = {}
     json_friendly['annual_periods'] = schedule.annual_periods
-    json_friendly['start_date'] = schedule.start_date
-    json_friendly['end_date'] = schedule.end_date
+    json_friendly['start_date'] = date2json(schedule.start_date)
+    json_friendly['end_date'] = date2json(schedule.end_date)
     json_friendly['events'] = []
     for event_date in schedule:
-        json_friendly['events'].append(event_date.strftime(JSON_DATE_FORMAT))
+        json_friendly['events'].append(date2json(event_date))
     return json_friendly
 
 
 def json2schedule(json_schedule):
+    """de-serialize schedule from JSON"""
     schedule_events = []
-    for event_str in schedule_events:
+    for event_str in json_schedule['events']:
         parsed = datetime.datetime.strptime(event_str, JSON_DATE_FORMAT)
         schedule_events.append(parsed.date())
 
@@ -238,3 +250,10 @@ if __name__ == '__main__':
         start_date=datetime.date(
             2002, 1, 1), end_date=datetime.date(
             2006, 3, 3), months=2)
+    js = schedule2json(ms)
+    cs = json2schedule(js)
+
+    pre_set = set(ms)
+    post_set = set(cs)
+
+    diff_set = pre_set.difference(post_set)
