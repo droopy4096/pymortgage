@@ -1,5 +1,7 @@
 #!/bin/env python
 
+from TermScheduler import date2json, json2date
+
 
 class MortgageStatement(object):
     _principal = None
@@ -12,9 +14,9 @@ class MortgageStatement(object):
     def __init__(self, principal, interest, period, payment_date, remaining_balance):
         self._principal = principal
         self._interest = interest
-        self._period=period
-        self._remaining_balance=remaining_balance
-        self._date=payment_date
+        self._period = period
+        self._remaining_balance = remaining_balance
+        self._date = payment_date
 
     @property
     def remaining_balance(self):
@@ -54,4 +56,20 @@ class MortgageStatement(object):
         return self.principal + self.interest
 
     def __str__(self):
-        return "{0:>3} {1:>10} principal:{2:.2f} interest:{3:.2f} remaining:{4:.2f}".format(self.period, str(self._date), self.principal, self.interest, self.remaining_balance)
+        return "{0:>3} {1:>10} principal:{2:.2f} interest:{3:.2f} remaining:{4:.2f}".format(
+            self.period, str(self._date), self.principal, self.interest,
+            self.remaining_balance)
+
+    def serialize_json(self):
+        return {'period': self.period,
+                'date': date2json(self._date),
+                'principal': self.principal,
+                'interest': self.interest,
+                'remaining_balance': self.remaining_balance}
+
+    def deserialize_json(self, data):
+        self.period = data['period']
+        self._date = json2date(data['date'])
+        self.principal = data['principal']
+        self.interest = data['interest']
+        self.remaining_balance = data['remaining_balance']
