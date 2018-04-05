@@ -28,3 +28,9 @@ targets:
       args:
         - setup.py
         - clean
+  clean-all:
+      cmd: "/bin/rm"
+      args:
+        - "-rf"
+        - "build"
+        - "dist"

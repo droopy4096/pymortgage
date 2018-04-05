@@ -1,6 +1,7 @@
 #!/bin/env python
 
 from TermScheduler import date2json, json2date
+from decimal import Decimal
 
 
 class MortgageStatement(object):
@@ -63,13 +64,13 @@ class MortgageStatement(object):
     def serialize_json(self):
         return {'period': self.period,
                 'date': date2json(self._date),
-                'principal': self.principal,
-                'interest': self.interest,
-                'remaining_balance': self.remaining_balance}
+                'principal': str(self.principal),
+                'interest': str(self.interest),
+                'remaining_balance': str(self.remaining_balance)}
 
     def deserialize_json(self, data):
         self.period = data['period']
         self._date = json2date(data['date'])
-        self.principal = data['principal']
-        self.interest = data['interest']
-        self.remaining_balance = data['remaining_balance']
+        self.principal = Decimal(data['principal'])
+        self.interest = Decimal(data['interest'])
+        self.remaining_balance = Decimal(data['remaining_balance'])
