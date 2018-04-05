@@ -112,9 +112,10 @@ class TermSchedule_iter(object):
 class CustomSchedule(TermSchedule):
     def __init__(self, start_date, end_date, skip_last=False, **kwargs):
         self._events = kwargs['events']
-        self.annual_periods = kwargs['annual_periods']
-        kwargs['annual_periods'] = self.annual_periods
+        # self.annual_periods = kwargs['annual_periods']
+        # kwargs['annual_periods'] = self.annual_periods
         super(CustomSchedule, self).__init__(start_date, end_date, skip_last, **kwargs)
+        self.annual_periods = kwargs['annual_periods']
         self._iter_class = None
 
     def __iter__(self):
