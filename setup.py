@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='pymortgage',
-    version='0.1.1',
+    version='0.1.2',
     author="Dmytro Makovey",
     author_email="dmakovey@yahoo.com",
     description=("Python Mortgage utilities"),
@@ -19,7 +19,7 @@ setup(
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Topic :: Utilities",
-        "License :: OSI Approved :: GPL3 License",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
 )

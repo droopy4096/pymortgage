@@ -1,0 +1,30 @@
+cmd: "/usr/bin/python"
+name: "build wheel"
+args:
+  - setup.py
+  - bdist_wheel
+  - "--universal"
+sh: true,
+# cwd: <current working directory for `cmd`>
+# env:
+#   VARIABLE1: "VALUE1"
+#   VARIABLE2: "VALUE2"
+# errorMatch:
+#   - ^regexp1$
+#   - ^regexp2$
+# warningMatch:
+#   - ^regexp1$
+#   - ^regexp2$
+# keymap: <keymap string>
+# atomCommandName: namespace:command
+targets:
+  pypi:
+      cmd: twine
+      args:
+        - upload
+        - dist/*
+  clean:
+      cmd: "/usr/bin/python"
+      args:
+        - setup.py
+        - clean

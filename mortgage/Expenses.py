@@ -1,24 +1,40 @@
 #!/bin/env python
 
+# Types of expense:
+#  1. one time sum: roof replacement etc.
+#  2. recurring fixed amount: insurance
+#  3. one-time percentage of transaction: transfer fee
+#  4. recurring percentage of transaction: property taxes
+
+# Typical expenses
+#  1. closing fees (%)
+#  2. early termination fees (%)
+#  3. house renovation  ($)
+#  4. realtor (%)
+#  5. house staging for sale (%)
+#  6. title transfer fee (%)
+#  7. insurance ($)
+#  8. property tax (%)
+
 
 class Expense(object):
     """Represent expenses during various stages of mortgage process"""
 
-    def __init__(self, title, cost, expense_date):
+    def __init__(self, title, amount, expense_date):
         self._title = title
-        self._cost = cost
+        self._amount = amount
         self._date = expense_date
 
     def __str__(self):
-        return "{0}: {1:.2f}".format(self._title, self._cost)
+        return "{0}: {1:.2f}".format(self._title, self._amount)
 
     @property
     def title(self):
         return self._title
 
     @property
-    def cost(self):
-        return self._cost
+    def amount(self):
+        return self._amount
 
     @property
     def date(self):
@@ -50,8 +66,8 @@ class ExpenseList(object):
 
 
 class Fee(Expense):
-    def __init__(self, title, cost, expense_date):
-        super(Fee, self).__init__(title, cost, expense_date)
+    def __init__(self, title, amount, expense_date):
+        super(Fee, self).__init__(title, amount, expense_date)
 
     def penalty(self, fee_date):
         return 0
