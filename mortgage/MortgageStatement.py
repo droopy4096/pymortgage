@@ -1,6 +1,6 @@
 #!/bin/env python
 
-from TermScheduler import date2json, json2date
+from .TermScheduler import date2json, json2date
 from decimal import Decimal
 
 

@@ -1,8 +1,11 @@
 # coding=UTF-8
 
 import decimal
-from UserDict import UserDict
-from MortgageStatement import MortgageStatement
+try:
+    from UserDict import UserDict
+except ModuleNotFoundError:
+    from collections import UserDict
+from .MortgageStatement import MortgageStatement
 
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
 

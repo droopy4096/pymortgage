@@ -80,7 +80,9 @@ class TermSchedule_iter(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    # __next__ = next
+
+    def __next__(self):
         # next_date=self.start_date+self.get_delta()
         # print self.current_date, self.next_year
         if self.current_date > self.end_date:
@@ -107,6 +109,7 @@ class TermSchedule_iter(object):
             else:
                 self.current_date = next_date
             return return_date
+    next = __next__
 
 
 class CustomSchedule(TermSchedule):
