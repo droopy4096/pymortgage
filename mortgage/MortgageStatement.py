@@ -2,6 +2,7 @@
 
 from TermScheduler import date2json, json2date
 from decimal import Decimal
+import json
 
 
 class MortgageStatement(object):
@@ -74,3 +75,14 @@ class MortgageStatement(object):
         self.principal = Decimal(data['principal'])
         self.interest = Decimal(data['interest'])
         self.remaining_balance = Decimal(data['remaining_balance'])
+
+def json2mortgagestatement(data):
+    period = data['period']
+    payment_date = json2date(data['date'])
+    principal = Decimal(data['principal'])
+    interest = Decimal(data['interest'])
+    remaining_balance = Decimal(data['remaining_balance'])
+    return MortgageStatement(principal, interest, period, payment_date, remaining_balance):
+
+def mortgagestatement2json(ms):
+    return json.dumps(ms.serialize_json())

@@ -163,6 +163,11 @@ class PrePrepaymentSchedule(UserDict):
         else:
             return 0
 
+def json2mortgage(mortgage_string):
+    pass
+
+def mortgage2json(mortgage):
+    pass
 
 if __name__ == '__main__':
     from datetime import date

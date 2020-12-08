@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='pymortgage',
-    version='0.1.5',
+    version='0.1.7',
     author="Dmytro Makovey",
     author_email="dmakovey@yahoo.com",
     description=("Python Mortgage utilities"),
