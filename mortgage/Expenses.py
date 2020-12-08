@@ -53,11 +53,11 @@ class ExpenseList(object):
         self._expenses.append(expense)
 
     def sum(self):
-        return sum([e.cost for e in self._expenses])
+        return sum([e.amount for e in self._expenses])
 
     def __str__(self):
         return "{0}\nTotal: {1:.2f}".format(
-            str([("{0} ({1})".format(e.title, e.date), e.cost) for e in self._expenses]), self.sum())
+            str([("{0} ({1})".format(e.title, e.date), e.amount) for e in self._expenses]), self.sum())
 
     @property
     def options(self):

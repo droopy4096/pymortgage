@@ -5,7 +5,7 @@ try:
     from UserDict import UserDict
 except ModuleNotFoundError:
     from collections import UserDict
-from .MortgageStatement import MortgageStatement
+from MortgageStatement import MortgageStatement
 
 DOLLAR_QUANTIZE = decimal.Decimal('.01')
 
@@ -90,6 +90,10 @@ class Mortgage(object):
     def principal(self):
         """ Principal borrowed """
         return self._house_price - self._downpayment
+
+    @property
+    def house_price(self):
+        return self._house_price
 
     def payments(self):
         """

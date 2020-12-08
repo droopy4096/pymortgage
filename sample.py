@@ -3,6 +3,7 @@
 from mortgage.Mortgage import Mortgage
 
 from mortgage import TermScheduler
+import json
 
 import datetime
 
@@ -18,3 +19,20 @@ for p in m.payments():
     print(p)
 
 print("Total paid {0:.2f} principal and {1:.2f} interest".format(principal, interest))
+
+from mortgage.ROI import ROI
+
+roi=ROI( mortgage=m, 
+         target_sell_price=320000, 
+         appreciation=0.002, 
+         baseline_return=300000, 
+         investments=5000, 
+         property_tax_rate=0.01, 
+         property_insurance=2000, 
+         tax_rate=0.3, 
+         sale_expences=0.1)
+roi_list=[]
+for r in roi():
+    roi_list.append(r.serialize_json())
+
+print(json.dumps(roi_list, indent=2))
