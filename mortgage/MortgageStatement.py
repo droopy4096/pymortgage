@@ -82,7 +82,7 @@ def json2mortgagestatement(data):
     principal = Decimal(data['principal'])
     interest = Decimal(data['interest'])
     remaining_balance = Decimal(data['remaining_balance'])
-    return MortgageStatement(principal, interest, period, payment_date, remaining_balance):
+    return MortgageStatement(principal, interest, period, payment_date, remaining_balance)
 
 def mortgagestatement2json(ms):
     return json.dumps(ms.serialize_json())
